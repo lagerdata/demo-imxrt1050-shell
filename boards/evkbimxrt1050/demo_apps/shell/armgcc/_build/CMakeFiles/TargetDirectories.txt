@@ -1,0 +1,3 @@
+/app/boards/evkbimxrt1050/demo_apps/shell/armgcc/_build/CMakeFiles/rebuild_cache.dir
+/app/boards/evkbimxrt1050/demo_apps/shell/armgcc/_build/CMakeFiles/edit_cache.dir
+/app/boards/evkbimxrt1050/demo_apps/shell/armgcc/_build/CMakeFiles/shell.elf.dir

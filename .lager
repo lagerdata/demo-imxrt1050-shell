@@ -1,0 +1,9 @@
+[LAGER]
+
+[DEVENV]
+image = lagerdata/devenv-cortexm
+mount_dir = /app
+shell = /bin/bash
+cmd.shell-debug-build = export ARMGCC_DIR=/usr;cd boards/evkbimxrt1050/demo_apps/shell/armgcc;rm -rf _build;mkdir -p _build;cd _build;cmake .. -DCMAKE_TOOLCHAIN_FILE=../../../../../tools/cmake_toolchain_files/armgcc.cmake -G Ninja -DCMAKE_BUILD_TYPE=flexspi_nor_debug .;cmake --build .
+cmd.convert-elf-to-hex = cd boards/evkbimxrt1050/demo_apps/shell/armgcc/flexspi_nor_debug;arm-none-eabi-objcopy -O ihex shell.elf shell.hex
+

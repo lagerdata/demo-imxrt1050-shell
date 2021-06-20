@@ -1,0 +1,70 @@
+name: Workflow for building and running some simple hardware tests
+on: [push]
+env:
+  LAGER_GATEWAY: 113
+concurrency: 
+  group: dut
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Build Project
+        uses: docker://lagerdata/devenv-cortexm
+        with:
+          entrypoint: /usr/local/bin/lager
+          args: exec shell-debug-build
+
+      - name: Convert elf to hex
+        uses: docker://lagerdata/devenv-cortexm
+        with:
+          entrypoint: /usr/local/bin/lager
+          args: exec convert-elf-to-hex
+
+      - name: Upload the app hexfile
+        uses: actions/upload-artifact@v2
+        with:
+          name: app_hexfile
+          path: boards/evkbimxrt1050/demo_apps/shell/armgcc/flexspi_nor_debug/shell.hex
+
+
+  connect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to gateway
+        uses: docker://lagerdata/lager-cli
+        env:
+          LAGER_TOKEN_ID: ${{ secrets.LAGER_TOKEN_ID }} 
+          LAGER_TOKEN_SECRET: ${{ secrets.LAGER_TOKEN_SECRET }}     #This is setup inside GitHub see https://docs.lagerdata.com/ci/github_actions.html     
+        with:
+          entrypoint: /usr/local/bin/lager
+          args: connect --device imxrt1050 --speed 3000 --force
+
+
+  flash: #Only proceed to this step if the build and connect jobs succeeded 
+    runs-on: ubuntu-latest
+    needs: [build, connect]
+    steps:
+
+      - name: Download the app hexfile
+        uses: actions/download-artifact@v2
+        with:
+          name: app_hexfile
+
+
+      - name: Flash Device
+        uses: docker://lagerdata/lager-cli
+        env:
+          LAGER_TOKEN_ID: ${{ secrets.LAGER_TOKEN_ID }} 
+          LAGER_TOKEN_SECRET: ${{ secrets.LAGER_TOKEN_SECRET }}
+        with:
+          entrypoint: /usr/local/bin/lager
+          args: flash --hexfile /github/workspace/shell.hex
+
+
