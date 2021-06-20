@@ -1,7 +1,7 @@
 name: Workflow for building and running some simple hardware tests
 on: [push]
 env:
-  LAGER_GATEWAY: 113
+  LAGER_GATEWAY: 45
 concurrency: 
   group: dut
   cancel-in-progress: false
