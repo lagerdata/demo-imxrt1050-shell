@@ -101,6 +101,8 @@ include(utilities_misc_utilities_MIMXRT1052)
 
 include(device_MIMXRT1052_system_MIMXRT1052)
 
+target_compile_options(${MCUX_SDK_PROJECT_NAME} PRIVATE "-ffile-prefix-map=/app=.")
+
 
 TARGET_LINK_LIBRARIES(${MCUX_SDK_PROJECT_NAME} PRIVATE -Wl,--start-group)
 
