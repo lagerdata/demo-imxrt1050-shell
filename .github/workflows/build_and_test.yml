@@ -57,7 +57,6 @@ jobs:
         with:
           name: app_hexfile
 
-
       - name: Flash Device
         uses: docker://lagerdata/lager-cli
         env:
@@ -67,4 +66,11 @@ jobs:
           entrypoint: /usr/local/bin/lager
           args: flash --hexfile /github/workspace/shell.hex
 
-
+      - name: Test Shell
+        uses: docker://lagerdata/lager-cli
+        env:
+          LAGER_TOKEN_ID: ${{ secrets.LAGER_TOKEN_ID }} 
+          LAGER_TOKEN_SECRET: ${{ secrets.LAGER_TOKEN_SECRET }}
+        with:
+          entrypoint: /usr/local/bin/lager
+          args: python tests/test_shell.py

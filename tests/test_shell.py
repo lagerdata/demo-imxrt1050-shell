@@ -10,9 +10,6 @@ def main():
 
     #halt device
     device.reset(halt=True)
-    #flash device
-    #app = [lager.Hexfile("shell.hex")]
-    #device.flash(hexfiles=app)
 
 
     with serial.Serial('/dev/ttyACM0', 115200, timeout=1) as ser:
