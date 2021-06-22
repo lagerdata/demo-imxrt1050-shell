@@ -8,9 +8,12 @@ def main():
     device = gateway.connect("imxrt1050",interface="ftdi",transport="swd",speed=3000)
     print(f"Connected to device:{device}")
 
+
     #halt device
     device.reset(halt=True)
 
+    #flash device
+    
 
     with serial.Serial('/dev/ttyACM0', 115200, timeout=1) as ser:
         while ser.read(1024):
