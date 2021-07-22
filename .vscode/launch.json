@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch gdb-mutliarch",
+            "type": "cppdbg",
+            "request": "launch",
+            "miDebuggerPath": "/usr/bin/gdb-multiarch",
+            "miDebuggerArgs": "--cd=${workspaceFolder} --nx",
+            "MIMode": "gdb", 
+            "program": "${workspaceFolder}/boards/evkbimxrt1050/demo_apps/shell/armgcc/flexspi_nor_debug/shell.elf", 
+             "setupCommands": [
+                {"text": "set remotetimeout 5"},
+                {"text": "target remote localhost:3333"},
+                {"text": "monitor reset halt"},
+                {"text": "file 'boards/evkbimxrt1050/demo_apps/shell/armgcc/flexspi_nor_debug/shell.elf'"},
+                {"text": "load"},
+                {"text": "break main","ignoreFailures": true}
+            ],
+            "launchCompleteCommand": "None",
+            "externalConsole": false,
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
